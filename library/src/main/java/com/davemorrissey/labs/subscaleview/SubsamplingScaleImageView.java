@@ -3,7 +3,6 @@ package com.davemorrissey.labs.subscaleview;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -16,12 +15,10 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import androidx.annotation.Nullable;
 import androidx.exifinterface.media.ExifInterface;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.MediaStore;
 import androidx.annotation.AnyThread;
 import androidx.annotation.NonNull;
 import android.util.AttributeSet;
@@ -1890,67 +1887,56 @@ public class SubsamplingScaleImageView extends View {
      * This will only work for external files, not assets, resources or other URIs.
      * Return rotation and flip.
      */
-    @AnyThread
-    private int[] getExifOrientation(Context context, String sourceUri) {
-        int exifOrientation = ORIENTATION_0;
-        int exifFlip = FLIP_NONE;
-        if (sourceUri.startsWith(ContentResolver.SCHEME_CONTENT)) {
-            Cursor cursor = null;
-            try {
-                String[] columns = { MediaStore.Images.Media.ORIENTATION };
-                cursor = context.getContentResolver().query(Uri.parse(sourceUri), columns, null, null, null);
-                if (cursor != null) {
-                    if (cursor.moveToFirst()) {
-                        int orientation = cursor.getInt(0);
-                        if (VALID_ORIENTATIONS.contains(orientation) && orientation != ORIENTATION_USE_EXIF) {
-                            exifOrientation = orientation;
-                        } else {
-                            Log.w(TAG, "Unsupported orientation: " + orientation);
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                Log.w(TAG, "Could not get orientation of image from media store");
-            } finally {
-                if (cursor != null) {
-                    cursor.close();
-                }
-            }
-        } else if (sourceUri.startsWith(ImageSource.FILE_SCHEME) && !sourceUri.startsWith(ImageSource.ASSET_SCHEME)) {
-            try {
-                ExifInterface exifInterface = new ExifInterface(sourceUri.substring(ImageSource.FILE_SCHEME.length() - 1));
-                int orientationAttr = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-                if (orientationAttr == ExifInterface.ORIENTATION_NORMAL || orientationAttr == ExifInterface.ORIENTATION_UNDEFINED) {
-                    exifOrientation = ORIENTATION_0;
-                } else if (orientationAttr == ExifInterface.ORIENTATION_ROTATE_90) {
-                    exifOrientation = ORIENTATION_90;
-                } else if (orientationAttr == ExifInterface.ORIENTATION_ROTATE_180) {
-                    exifOrientation = ORIENTATION_180;
-                } else if (orientationAttr == ExifInterface.ORIENTATION_ROTATE_270) {
-                    exifOrientation = ORIENTATION_270;
-                } else if (orientationAttr == ExifInterface.ORIENTATION_FLIP_HORIZONTAL) {
-                    exifOrientation = ORIENTATION_0;
-                    exifFlip = FLIP_H;
-                } else if (orientationAttr == ExifInterface.ORIENTATION_FLIP_VERTICAL) {
-                    exifOrientation = ORIENTATION_0;
-                    exifFlip = FLIP_V;
-                } else if (orientationAttr == ExifInterface.ORIENTATION_TRANSPOSE) {
-                    exifOrientation = ORIENTATION_90;
-                    exifFlip = FLIP_H;
-                } else if (orientationAttr == ExifInterface.ORIENTATION_TRANSVERSE) {
-                    exifOrientation = ORIENTATION_270;
-                    exifFlip = FLIP_H;
-                } else {
-                    Log.w(TAG, "Unsupported EXIF orientation: " + orientationAttr);
-                }
-            } catch (Exception e) {
-                Log.w(TAG, "Could not get EXIF orientation of image");
-            }
-        }
-        return new int[] { exifOrientation, exifFlip };
-    }
+	@AnyThread
+	private int[] getExifOrientation(Context context, String sourceUri) {
+		int exifOrientation = ORIENTATION_0;
+		int exifFlip = FLIP_NONE;
+		ExifInterface exifInterface = null;
+		if (sourceUri.startsWith(ContentResolver.SCHEME_CONTENT)) {
+			try {
+				exifInterface = new ExifInterface(context.getContentResolver().openInputStream(Uri.parse(sourceUri)));
+			} catch (Exception e) {
+				Log.w(TAG, "Could not get EXIF orientation of image");
+			}
+		} else if (sourceUri.startsWith(ImageSource.FILE_SCHEME) && !sourceUri.startsWith(ImageSource.ASSET_SCHEME)) {
+			try {
+				exifInterface = new ExifInterface(sourceUri.substring(ImageSource.FILE_SCHEME.length() - 1));
+			} catch (Exception e) {
+				Log.w(TAG, "Could not get EXIF orientation of image");
+			}
+		}
 
-    private void execute(AsyncTask<Void, Void, ?> asyncTask) {
+		if(exifInterface != null) {
+			int orientationAttr = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+			if (orientationAttr == ExifInterface.ORIENTATION_NORMAL || orientationAttr == ExifInterface.ORIENTATION_UNDEFINED) {
+				exifOrientation = ORIENTATION_0;
+			} else if (orientationAttr == ExifInterface.ORIENTATION_ROTATE_90) {
+				exifOrientation = ORIENTATION_90;
+			} else if (orientationAttr == ExifInterface.ORIENTATION_ROTATE_180) {
+				exifOrientation = ORIENTATION_180;
+			} else if (orientationAttr == ExifInterface.ORIENTATION_ROTATE_270) {
+				exifOrientation = ORIENTATION_270;
+			} else if (orientationAttr == ExifInterface.ORIENTATION_FLIP_HORIZONTAL) {
+				exifOrientation = ORIENTATION_0;
+				exifFlip = FLIP_H;
+			} else if (orientationAttr == ExifInterface.ORIENTATION_FLIP_VERTICAL) {
+				exifOrientation = ORIENTATION_0;
+				exifFlip = FLIP_V;
+			} else if (orientationAttr == ExifInterface.ORIENTATION_TRANSPOSE) {
+				exifOrientation = ORIENTATION_90;
+				exifFlip = FLIP_H;
+			} else if (orientationAttr == ExifInterface.ORIENTATION_TRANSVERSE) {
+				exifOrientation = ORIENTATION_270;
+				exifFlip = FLIP_H;
+			} else {
+				Log.w(TAG, "Unsupported EXIF orientation: " + orientationAttr);
+			}
+		}
+
+		return new int[] { exifOrientation, exifFlip };
+	}
+
+	private void execute(AsyncTask<Void, Void, ?> asyncTask) {
         try {
             asyncTask.executeOnExecutor(executor);
         } catch(RejectedExecutionException ex) {
