@@ -10,7 +10,6 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 29
-        consumerProguardFiles 'proguard-rules.txt'
     }
 }
 
