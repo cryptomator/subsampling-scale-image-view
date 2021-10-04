@@ -1,8 +1,8 @@
 version: "1"
 rules:                      
   - base: main
-    upstream:  davemorrissey:master
-    mergeMethod: merge 
+    upstream: davemorrissey:master
+    mergeMethod: none
     mergeUnstable: false
 label: ":arrow_heading_down: pull"
 conflictLabel: "merge-conflict"
