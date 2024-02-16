@@ -1,4 +1,4 @@
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
 def isReleaseBuild() {
@@ -26,12 +26,14 @@ afterEvaluate { project ->
     }
     */
 
-    uploadArchives {
-        configuration = configurations.archives
-        repositories.mavenDeployer {
+    publishing.publications {
+
+        maven(MavenPublication) {
             /*
             beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
             */
+            from components.release
+            artifactId = project.archivesBaseName
 
             /*
             repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
@@ -39,30 +41,30 @@ afterEvaluate { project ->
             }
             */
 
-            pom.project {
-                name 'SubsamplingScaleImageView'
-                packaging 'aar'
-                description 'Highly configurable, easily extendable deep zoom view for displaying huge images without loss of detail. Perfect for photo galleries, maps, building plans etc.'
-                url 'https://github.com/davemorrissey/subsampling-scale-image-view'
+            pom {
+                name = 'SubsamplingScaleImageView'
+                packaging = 'aar'
+                description = 'Highly configurable, easily extendable deep zoom view for displaying huge images without loss of detail. Perfect for photo galleries, maps, building plans etc.'
+                url = 'https://github.com/davemorrissey/subsampling-scale-image-view'
 
                 scm {
-                    url 'scm:git@github.com:davemorrissey/subsampling-scale-image-view.git'
-                    connection 'scm:git@github.com:davemorrissey/subsampling-scale-image-view.git'
-                    developerConnection 'scm:git@github.com:davemorrissey/subsampling-scale-image-view.git'
+                    url = 'scm:git@github.com:davemorrissey/subsampling-scale-image-view.git'
+                    connection = 'scm:git@github.com:davemorrissey/subsampling-scale-image-view.git'
+                    developerConnection = 'scm:git@github.com:davemorrissey/subsampling-scale-image-view.git'
                 }
 
                 licenses {
                     license {
-                        name 'The Apache Software License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                        distribution 'repo'
+                        name = 'The Apache Software License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution = 'repo'
                     }
                 }
 
                 developers {
                     developer {
-                        id 'davemorrissey'
-                        name 'Dave Morrissey'
+                        id = 'davemorrissey'
+                        name = 'Dave Morrissey'
                     }
                 }
             }
