@@ -42,15 +42,15 @@ afterEvaluate { project ->
             */
 
             pom {
-                name = 'SubsamplingScaleImageView'
+                name = 'Fork of com.davemorrissey.labs:subsampling-scale-image-view-androidx for Cryptomator for Android'
                 packaging = 'aar'
-                description = 'Highly configurable, easily extendable deep zoom view for displaying huge images without loss of detail. Perfect for photo galleries, maps, building plans etc.'
-                url = 'https://github.com/davemorrissey/subsampling-scale-image-view'
+                description = 'Unofficial, unaffiliated and unassociated fork of https://github.com/davemorrissey/subsampling-scale-image-view for internal use in Cryptomator for Android.'
+                url = 'https://github.com/cryptomator/subsampling-scale-image-view'
 
                 scm {
-                    url = 'scm:git@github.com:davemorrissey/subsampling-scale-image-view.git'
-                    connection = 'scm:git@github.com:davemorrissey/subsampling-scale-image-view.git'
-                    developerConnection = 'scm:git@github.com:davemorrissey/subsampling-scale-image-view.git'
+                    url = 'scm:git@github.com:cryptomator/subsampling-scale-image-view.git'
+                    connection = 'scm:git@github.com:cryptomator/subsampling-scale-image-view.git'
+                    developerConnection = 'scm:git@github.com:cryptomator/subsampling-scale-image-view.git'
                 }
 
                 licenses {
@@ -63,8 +63,15 @@ afterEvaluate { project ->
 
                 developers {
                     developer {
+                        id = 'cryptomator'
+                        name = 'Cryptomator'
+                        url = 'https://cryptomator.org/'
+                        roles = ['Maintainer of this fork']
+                    }
+                    developer {
                         id = 'davemorrissey'
                         name = 'Dave Morrissey'
+                        roles = ['Maintainer of the forked repository at https://github.com/davemorrissey/subsampling-scale-image-view']
                     }
                 }
             }
