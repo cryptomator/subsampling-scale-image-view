@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ ** Notice of Modification **
+  ~
+  ~ This file has been altered from its original version by the Cryptomator team.
+  ~ For a detailed history of modifications, please refer to the version control log.
+  ~
+  ~ The original file can be found at https://github.com/davemorrissey/subsampling-scale-image-view
+  ~
+  ~ ~~
+  ~
+  ~ https://cryptomator.org/
+  -->
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           package="com.davemorrissey.labs.subscaleview.test"
