@@ -1,3 +1,18 @@
+# Unofficial, unaffiliated and unassociated fork of https://github.com/davemorrissey/subsampling-scale-image-view for internal use in Cryptomator for Android.
+
+> [!IMPORTANT]  
+> This project is provided under the terms of the [Apache License, Version 2.0;](LICENSE) while it is made available to the public,
+> it is important to note that this repository is **not intended for public use** and therefore **no support** is provided whatsoever.
+>
+> For a project designed for use by the public, please refer to the [original repository.](https://github.com/davemorrissey/subsampling-scale-image-view)
+>
+> An excerpt from the README of the original project is reproduced below for your convenience and to provide proper attribution.  
+> This project is not affiliated, associated, endorsed by, or in any way officially connected with David Morrissey, or any of their affiliates.
+
+---
+
+# Excerpt from the original README
+
 Subsampling Scale Image View
 ===========================
 
