@@ -1,5 +1,18 @@
+/*
+ * ** Notice of Modification **
+ *
+ * This file has been altered from its original version by the Cryptomator team.
+ * For a detailed history of modifications, please refer to the version control log.
+ *
+ * The original file can be found at https://github.com/davemorrissey/subsampling-scale-image-view
+ *
+ * --
+ *
+ * https://cryptomator.org/
+ */
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-allprojects {
+buildscript {
     repositories {
         mavenCentral()
         jcenter()
@@ -7,13 +20,15 @@ allprojects {
     }
 }
 
-buildscript {
+plugins {
+    id 'com.android.library' version '7.4.1' apply false
+    id 'com.android.application' version '7.4.1' apply false
+}
+
+allprojects {
     repositories {
         mavenCentral()
         jcenter()
         google()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.3'
     }
 }

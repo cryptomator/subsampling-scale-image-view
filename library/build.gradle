@@ -1,8 +1,21 @@
+/*
+ * ** Notice of Modification **
+ *
+ * This file has been altered from its original version by the Cryptomator team.
+ * For a detailed history of modifications, please refer to the version control log.
+ *
+ * The original file can be found at https://github.com/davemorrissey/subsampling-scale-image-view
+ *
+ * --
+ *
+ * https://cryptomator.org/
+ */
+
 apply plugin: 'com.android.library'
 
 group = 'com.davemorrissey.labs'
 archivesBaseName = 'subsampling-scale-image-view-androidx'
-version = '3.10.0'
+version = '3.10.1-dev.0001'
 
 android {
     compileSdkVersion 33
@@ -33,3 +46,5 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.4.0'
     implementation 'androidx.exifinterface:exifinterface:1.3.3'
 }
+
+apply from: rootProject.file('release.gradle')

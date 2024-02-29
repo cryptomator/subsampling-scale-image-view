@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ ** Notice of Modification **
+  ~
+  ~ This file has been altered from its original version by the Cryptomator team.
+  ~ For a detailed history of modifications, please refer to the version control log.
+  ~
+  ~ The original file can be found at https://github.com/davemorrissey/subsampling-scale-image-view
+  ~
+  ~ ~~
+  ~
+  ~ https://cryptomator.org/
+  -->
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           package="com.davemorrissey.labs.subscaleview.test"
@@ -10,7 +23,8 @@
 <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" tools:node="remove"/>
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="remove"/>
 <application android:label="@string/app.name" android:theme="@style/sampleTheme" android:icon="@mipmap/ic_launcher" android:allowBackup="false" tools:ignore="GoogleAppIndexingWarning">
-    <activity android:name=".MainActivity" android:label="@string/app.name">
+    <activity android:name=".MainActivity" android:label="@string/app.name"
+        android:exported="true">
         <intent-filter>
             <action android:name="android.intent.action.MAIN"/>
             <category android:name="android.intent.category.LAUNCHER"/>

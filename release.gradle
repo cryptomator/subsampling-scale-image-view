@@ -1,4 +1,17 @@
-apply plugin: 'maven'
+/*
+ * ** Notice of Modification **
+ *
+ * This file has been altered from its original version by the Cryptomator team.
+ * For a detailed history of modifications, please refer to the version control log.
+ *
+ * The original file can be found at https://github.com/davemorrissey/subsampling-scale-image-view
+ *
+ * --
+ *
+ * https://cryptomator.org/
+ */
+
+apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
 def isReleaseBuild() {
@@ -19,50 +32,66 @@ def getMavenRepositoryPassword() {
 
 afterEvaluate { project ->
 
+    /*
     signing {
         required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
         sign configurations.archives
     }
+    */
 
-    uploadArchives {
-        configuration = configurations.archives
-        repositories.mavenDeployer {
+    publishing.publications {
+
+        maven(MavenPublication) {
+            /*
             beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+            */
+            from components.release
+            artifactId = project.archivesBaseName
 
+            /*
             repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
                 authentication(userName: getMavenRepositoryUsername(), password: getMavenRepositoryPassword())
             }
+            */
 
-            pom.project {
-                name 'SubsamplingScaleImageView'
-                packaging 'aar'
-                description 'Highly configurable, easily extendable deep zoom view for displaying huge images without loss of detail. Perfect for photo galleries, maps, building plans etc.'
-                url 'https://github.com/davemorrissey/subsampling-scale-image-view'
+            pom {
+                name = 'Fork of com.davemorrissey.labs:subsampling-scale-image-view-androidx for Cryptomator for Android'
+                packaging = 'aar'
+                description = 'Unofficial, unaffiliated and unassociated fork of https://github.com/davemorrissey/subsampling-scale-image-view for internal use in Cryptomator for Android.'
+                url = 'https://github.com/cryptomator/subsampling-scale-image-view'
 
                 scm {
-                    url 'scm:git@github.com:davemorrissey/subsampling-scale-image-view.git'
-                    connection 'scm:git@github.com:davemorrissey/subsampling-scale-image-view.git'
-                    developerConnection 'scm:git@github.com:davemorrissey/subsampling-scale-image-view.git'
+                    url = 'scm:git@github.com:cryptomator/subsampling-scale-image-view.git'
+                    connection = 'scm:git@github.com:cryptomator/subsampling-scale-image-view.git'
+                    developerConnection = 'scm:git@github.com:cryptomator/subsampling-scale-image-view.git'
                 }
 
                 licenses {
                     license {
-                        name 'The Apache Software License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                        distribution 'repo'
+                        name = 'The Apache Software License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution = 'repo'
                     }
                 }
 
                 developers {
                     developer {
-                        id 'davemorrissey'
-                        name 'Dave Morrissey'
+                        id = 'cryptomator'
+                        name = 'Cryptomator'
+                        url = 'https://cryptomator.org/'
+                        roles = ['Maintainer of this fork']
+                    }
+                    developer {
+                        id = 'davemorrissey'
+                        name = 'Dave Morrissey'
+                        roles = ['Maintainer of the forked repository at https://github.com/davemorrissey/subsampling-scale-image-view']
                     }
                 }
             }
         }
     }
 
+    /*
     task androidJavadocs(type: Javadoc) {
         onlyIf { gradle.taskGraph.hasTask("uploadArchives") }
         source = android.sourceSets.main.java.sourceFiles
@@ -88,5 +117,6 @@ afterEvaluate { project ->
         archives androidSourcesJar
         archives androidJavadocsJar
     }
+    */
 
 }
